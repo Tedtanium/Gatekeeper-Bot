@@ -13,7 +13,14 @@ serverHasBeenEmptyChecker.serverHasBeenEmpty = True
 def timer():
   time.sleep(1)
   sec += 1
-  
+  # Runs these modules every 30 seconds.
+  if sec % 30 == 0:
+    playerCount()
+    serverStatusChecker()
+    serverHasBeenEmptyChecker()
+  # Runs this every 5 minutes.
+  if sec % 300 == 0:
+    afterHoursShutdown()
   
 
 ## playerCount Module
