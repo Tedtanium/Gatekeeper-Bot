@@ -4,7 +4,18 @@ import os
 import discord
 ## etc.
 
+# Init
+sec = 0
+serverHasBeenEmptyChecker.serverHasBeenEmpty = True
+
 # Modules:
+## Timer/Puppeteer Module
+def timer():
+  time.sleep(1)
+  sec += 1
+  
+  
+
 ## playerCount Module
 def playerCount():
   rePattern = re.compile('(joined|left) this ARK!')
