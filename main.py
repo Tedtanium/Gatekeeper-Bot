@@ -15,19 +15,20 @@ class timer():
     def tickCheck(self): 
         time.sleep(1)
         self.sec += 1
-
+        if self.sec % 30 == 0:
+          playerCount()
+          serverStatusChecker()
+          serverHasBeenEmptyChecker()
+        if self.sec % 300 == 0:
+          afterHoursShutdown()
        
 # Management function
 def puppetMaster():
-  for i in -1:
-    timer.tickCheck():
-    if timer.tickCheck % 30 == 0:
-      playerCount()
-      serverStatusChecker()
-      serverHasBeenEmptyChecker()
-   if timer.tickCheck % 300 == 0:
-      afterHoursShutdown()
-
+  master = timer() #initializes the timer object
+  
+  #temporary infinite loop since no run duration has been specified yet
+  while(1):
+    master.tickCheck()
   
 
 ## playerCount function
