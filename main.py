@@ -5,22 +5,6 @@ import discord
 ## etc.
 
 # Init
-
-# Modules:
-## Timer/Puppeteer Module
-####def timer():
- #### sec = 0
- #### time.sleep(1)
- #### sec += 1
-  ##### Runs these modules every 30 seconds.
-  ####if sec % 30 == 0:
-  ####  playerCount()
-  ####  serverStatusChecker()
-  ####  serverHasBeenEmptyChecker()
-  ##### Runs this every 5 minutes.
- #### if sec % 300 == 0:
-   #### afterHoursShutdown()
-
 class timer(): 
       
     # init method/constructor 
@@ -32,6 +16,8 @@ class timer():
         time.sleep(1)
         self.sec += 1
 
+       
+# Management function
 def puppetMaster():
   for i in -1:
     timer.tickCheck():
@@ -44,26 +30,25 @@ def puppetMaster():
 
   
 
-## playerCount Module
+## playerCount function
 def playerCount():
   rePattern = re.compile('(joined|left) this ARK!')
   joinLeft = rePattern.findall(p.read_text(.//logs//ShooterGame.log))
   playerJoined = joinLeft.count('joined')
   playerLeft = joinLeft.count('left')
   playerCount = playerJoined - playerLeft
-  # Recurrence/timers?
 
-## serverStatus Checker Module
-## serverHasBeenEmpty Checker Module
+## serverStatus Checker function
+## serverHasBeenEmpty Checker function
 ###def serverHasBeenEmpty():
 ###  serverHasBeenEmpty = True
 
-## Server Starter Module
+## Server Starter function
 
-## Server Terminator Module
+## Server Terminator function
 
-## After-Hours Shutdown Module
+## After-Hours Shutdown function
 
-# Discord-related Modules:
-## Mood Updater Module
-## Command Receiver Module
+# Discord-related functions:
+## Mood Updater function
+## Command Receiver function
