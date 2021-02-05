@@ -5,6 +5,11 @@ import discord
 ## etc.
 
 # Init
+
+# A place to dump variables that may change easily in the future.
+class var_dump():
+    log_path = os.path(D://steamcmd//ARK//ShooterGame//Saved//Logs//ShooterGame.log
+
 class timer(): 
       
     # init method/constructor 
@@ -16,31 +21,34 @@ class timer():
         time.sleep(1)
         self.sec += 1
         if self.sec % 30 == 0:
-          playerCount()
-          serverStatusChecker()
-          serverHasBeenEmptyChecker()
+          player_count()
+          server_status_check()
+          server_has_been_empty_checker()
         if self.sec % 300 == 0:
-          afterHoursShutdown()
+          after_hours_shutdown()
        
 # Management function
-def puppetMaster():
+def puppet_master():
   master = timer() #initializes the timer object
   
   #temporary infinite loop since no run duration has been specified yet
   while(1):
-    master.tickCheck()
+    master.tick_check()
   
 
 ## playerCount function
-def playerCount():
-  rePattern = re.compile('(joined|left) this ARK!')
-  joinLeft = rePattern.findall(p.read_text(.//logs//ShooterGame.log))
-  playerJoined = joinLeft.count('joined')
-  playerLeft = joinLeft.count('left')
-  playerCount = playerJoined - playerLeft
+def player_count():
+  re_pattern = re.compile('(joined|left) this ARK!')
+  join_left = re_pattern.findall(p.read_text(.//logs//ShooterGame.log))
+  player_joined = join_left.count('joined')
+  player_left = join_left.count('left')
+  player_count = player_joined - player_left
 
-## serverStatus Checker function
-## serverHasBeenEmpty Checker function
+## Server status checker function
+### Future: Convert this to check for ShooterGameServer.exe and nothing in the log yet for a "Going up" state?
+#def server_status_check:
+
+## ServerHasBeenEmpty Checker function
 ###def serverHasBeenEmpty():
 ###  serverHasBeenEmpty = True
 
