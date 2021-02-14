@@ -75,7 +75,7 @@ def player_count():
 
 ## Server Terminator function
 
-## After-Hours Shutdown function
+## After-Hours Shutdown function - This is running on the assumption that it's a 24h clock and not a 12h, which is untested at this time.
 def after_hours_shutdown():
   if datetime.datetime.now().hour >= 22 or if datetime.datetime.now().hour <= 6:
      os.system("TASKKILL /F /IM 'ShooterGameServer.exe'")
