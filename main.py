@@ -28,7 +28,7 @@ class timer():
         self.sec += 1
         if self.sec % 30 == 0:
           players_online = player_count()
-          server_status_check()
+          server_status = server_status_check()
           server_inactive = server_has_been_empty_checker(players_online)
         if self.sec % 300 == 0 and server_inactive == True:
           after_hours_shutdown()
@@ -80,7 +80,7 @@ def after_hours_shutdown():
   if datetime.datetime.now().hour >= 22 or if datetime.datetime.now().hour <= 6:
      os.system("TASKKILL /F /IM 'ShooterGameServer.exe'")
      time.sleep(10)
-     os.system("shutdown /s /t 1)
+     os.system("shutdown /s /t 1")
 # Discord-related functions:
 ## Mood Updater function
 ## Command Receiver function
