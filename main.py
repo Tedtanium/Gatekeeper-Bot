@@ -65,14 +65,6 @@ def server_status_check():
   ###player_joined = join_left.count('joined')
   ###player_left = join_left.count('left')
   ###player_count = player_joined - player_left
-
-## Server status checker function
-### Future: Convert this to check for ShooterGameServer.exe and nothing in the log yet for a "Going up" state?
-#def server_status_check:
-
-## ServerHasBeenEmpty Checker function - Need to talk about how organization should happen with this one (how much of the function should be in timer?)
-#def serverHasBeenEmpty():
-#  serverHasBeenEmpty = True
    
 
 ## Server Starter function
