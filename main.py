@@ -1,11 +1,10 @@
-# import lines
+# import lines -- time helps create a timer, datetime allows us to pick out what hour it is gracefully, os allows for filesystem management and execution/killing of programs, discord allows for bot, psutil allows for scanning existing running processes, and rcon allows remote console into a server.
 import time
 import datetime
 import os
 import discord
-#rcon to be able to determine server and player status
+import psutil
 from rcon import Client
-## etc.
 
 # Init
 
@@ -21,15 +20,16 @@ class timer():
     # init method/constructor 
     def __init__(self): 
         self.sec = 0 
+                       
           
     # time check function every 30s
     def tick_check(self): 
         time.sleep(1)
         self.sec += 1
-        if self.sec % 30 == 0 and :
+        if self.sec % 30 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
           server_status, players_online = server_status_check()
           server_has_been_empty_checker(players_online)
-        if self.sec % 300 == 0:
+        if self.sec % 300 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
           after_hours_shutdown()
        
 # Management function
@@ -42,13 +42,18 @@ def puppet_master():
   
 
 ## playerCount function
-def player_count():
+def server_status_check():
    with Client(var_dump.ipaddr, var_dump.port, passwd=var_dump.passwd) as client:
-     players_online = client.run('listplayers')
-     if players_online == 'No Players Connected':
-       player_count = 0
-     else player_count = len(players_online)
-     return(player_count)
+     try:
+       players_online = client.run('listplayers')
+       server_status = 'Up'
+       if players_online == 'No Players Connected':
+         player_count = 0
+       else player_count = len(players_online)
+     except:
+       server_status = 'Starting'
+       player_count = -1
+     return(server_status, player_count)
 
                        
                        
