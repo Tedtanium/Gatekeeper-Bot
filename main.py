@@ -20,6 +20,7 @@ class timer():
     # init method/constructor 
     def __init__(self): 
         self.sec = 0 
+        self.inactivity_time = 0
                        
           
     # time check function every 30s
@@ -28,7 +29,7 @@ class timer():
         self.sec += 1
         if self.sec % 30 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
           server_status, players_online = server_status_check()
-          server_has_been_empty_checker(players_online)
+          server_inactivity_checker(players_online)
         if self.sec % 300 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
           after_hours_shutdown()
        
@@ -43,28 +44,31 @@ def puppet_master():
 
 ## playerCount function
 def server_status_check():
+  # Instigates connection to RCON and tries to get a playercount; if this fails the server is still starting.
    with Client(var_dump.ipaddr, var_dump.port, passwd=var_dump.passwd) as client:
      try:
        players_online = client.run('listplayers')
        server_status = 'Up'
        if players_online == 'No Players Connected':
          player_count = 0
+       # Fairly certain this output is stored as a list. If not, we can probably make it one...
        else player_count = len(players_online)
      except:
+      # If this is running and gives an error, the server is still going up. The player_count variable is dummied out for this instance.
        server_status = 'Starting'
        player_count = -1
      return(server_status, player_count)
 
-                       
-                       
-                       
-  # Commented the following out as it won't actually work for ARK, but will likely be usable for other servers going forward.                     
-###def player_count():
-  ###re_pattern = re.compile('(joined|left) this ARK!')
-  ###join_left = re_pattern.findall(p.read_text(.//logs//ShooterGame.log))
-  ###player_joined = join_left.count('joined')
-  ###player_left = join_left.count('left')
-  ###player_count = player_joined - player_left
+# Server inactivity checker - This will close the server two hours after everyone has logged out.
+def server_inactivity_checker(players_online):
+  if players_online = 0:
+    self.inactivity_time += 30
+  else self.inactivity_time = 0
+  if self.inactivity_time >= 7200:
+    print(datetime.datetime.now().time() '- Server has been inactive for two hours! Shutting it down...')
+    sleep(3)
+    server_terminator()
+
    
 
 ## Server Starter function
@@ -75,6 +79,24 @@ def server_status_check():
 def after_hours_shutdown():
   if datetime.datetime.now().hour >= 22 or if datetime.datetime.now().hour <= 6:
      os.system("shutdown /s /t 1")
+  else return
+                       
 # Discord-related functions:
+
 ## Mood Updater function
+
 ## Command Receiver function
+
+                       
+                       
+                       
+                       
+                       
+                       
+  # Commented the following out as it won't actually work for ARK, but will likely be usable for other servers going forward.                     
+###def player_count():
+  ###re_pattern = re.compile('(joined|left) this ARK!')
+  ###join_left = re_pattern.findall(p.read_text(.//logs//ShooterGame.log))
+  ###player_joined = join_left.count('joined')
+  ###player_left = join_left.count('left')
+  ###player_count = player_joined - player_left
