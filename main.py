@@ -10,10 +10,9 @@ from rcon import Client
 
 # A place to dump variables that may change easily in the future.
 class var_dump():
-    log_path = os.path(D://steamcmd//ARK//ShooterGame//Saved//Logs//ShooterGame.log
-    ipaddr = 0.0.0.0
+    ipaddr = '0.0.0.0'
     port = 0000
-    passwd = 0000
+    passwd = '0000'
 
 class timer(): 
       
@@ -30,7 +29,7 @@ class timer():
         if self.sec % 30 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
           server_status, players_online = server_status_check()
           server_inactivity_checker(players_online)
-        if self.sec % 300 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
+        if self.sec % 600 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
           after_hours_shutdown()
        
 # Management function
@@ -45,31 +44,32 @@ def puppet_master():
 ## playerCount function
 def server_status_check():
   # Instigates connection to RCON and tries to get a playercount; if this fails the server is still starting.
-   with Client(var_dump.ipaddr, var_dump.port, passwd=var_dump.passwd) as client:
-     try:
-       players_online = client.run('listplayers')
-       server_status = 'Up'
-       if players_online == 'No Players Connected':
-         player_count = 0
+    try:
+        with Client(var_dump.ipaddr, var_dump.port, passwd=var_dump.passwd) as client:
+            players_online = client.run('listplayers')
+        server_status = 'Up'
+        if 'No Players Connected' in players_online:
+            player_count = 0
        # Fairly certain this output is stored as a list. If not, we can probably make it one...
-       else player_count = len(players_online)
-     except:
-      # If this is running and gives an error, the server is still going up. The player_count variable is dummied out for this instance.
-       server_status = 'Starting'
-       player_count = -1
-     return(server_status, player_count)
+        else: 
+            player_count = (players_online).count('\n')
+    except:
+        # If this is running and gives an error, the server is still going up. The player_count variable is dummied out for this instance.
+        server_status = 'Starting'
+        player_count = -1
+    return(server_status, player_count)
 
 # Server inactivity checker - This will close the server two hours after everyone has logged out.
 def server_inactivity_checker(players_online):
-  if players_online = 0:
-    self.inactivity_time += 30
-  else self.inactivity_time = 0
-  if self.inactivity_time >= 7200:
-    print(datetime.datetime.now().time() '- Server has been inactive for two hours! Shutting it down...')
-    sleep(3)
-    server_terminator()
-
-   
+    if players_online == 0:
+        var_dump.inactivity_time += 30
+    else:
+        var_dump.inactivity_time = 0
+    if var_dump.inactivity_time >= 7200:
+        print(datetime.datetime.now().time() + '- Server has been inactive for two hours! Shutting it down...')
+        sleep(3)
+    return(var_dump.inactivity_time)
+    # Disabled until ready. server_terminator()
 
 ## Server Starter function
 
@@ -77,9 +77,10 @@ def server_inactivity_checker(players_online):
 
 ## After-Hours Shutdown function - This is running on the assumption that it's a 24h clock and not a 12h, which is untested at this time.
 def after_hours_shutdown():
-  if datetime.datetime.now().hour >= 22 or if datetime.datetime.now().hour <= 6:
-     os.system("shutdown /s /t 1")
-  else return
+    if var_dump.end_hour <= datetime.datetime.now().time() <= var_dump.start_hour:
+        os.system("shutdown /s /t 1")
+    else:
+        return('The time is ' + str(datetime.datetime.now().time()) + '. It\'s not time to shut down yet!')
                        
 # Discord-related functions:
 
@@ -88,8 +89,9 @@ def after_hours_shutdown():
 ## Command Receiver function
 
                        
-                       
-                       
+# Keys in the ignition!                       
+puppet_master()                       
+
                        
                        
                        
