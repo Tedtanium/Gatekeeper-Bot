@@ -13,24 +13,25 @@ class var_dump():
     ipaddr = '0.0.0.0'
     port = 0000
     passwd = '0000'
-
-class timer(): 
+    inactivity_time = 0
+    start_hour = datetime.time(6)
+    end_hour = datetime.time(22)
       
     # init method/constructor 
-    def __init__(self): 
-        self.sec = 0 
-        self.inactivity_time = 0
+def __init__(self): 
+    self.sec = 0 
+    self.inactivity_time = 0
                        
           
     # time check function every 30s
-    def tick_check(self): 
-        time.sleep(1)
-        self.sec += 1
-        if self.sec % 30 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
-          server_status, players_online = server_status_check()
-          server_inactivity_checker(players_online)
-        if self.sec % 600 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
-          after_hours_shutdown()
+def tick_check(self): 
+    time.sleep(1)
+    self.sec += 1
+    if self.sec % 30 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
+      server_status, players_online = server_status_check()
+      server_inactivity_checker(players_online)
+    if self.sec % 600 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
+      after_hours_shutdown()
        
 # Management function
 def puppet_master():
