@@ -5,11 +5,12 @@ import datetime
 import os
 import discord
 import psutil
+import asyncio
 from rcon import Client
 
 
 
-#Initialization and dump of variables.
+#Initialization and dump of malleable variables.
 class var_dump():
     ipaddr = '0.0.0.0'
     port = 0000
@@ -20,7 +21,7 @@ class var_dump():
     
 
 #Executes things on a clock!
-def tick_check(): 
+tick_check(): 
     while(1):
         time.sleep(1)
         var_dump.seconds += 1
@@ -33,9 +34,9 @@ def tick_check():
       
       
 # Management function
-def puppet_master():
+async def puppet_master():
     while(1):
         tick_check() 
 
 # Keys in the ignition!
-puppet_master()
+asyncio.run(puppet_master())
