@@ -21,7 +21,7 @@ class var_dump():
     
 
 #Executes things on a clock!
-tick_check(): 
+def tick_check(): 
     while(1):
         time.sleep(1)
         var_dump.seconds += 1
