@@ -1,5 +1,5 @@
-import bot-start
-import main
+import bot-functions
+import local-functions
 import time
 import datetime
 import os
@@ -9,12 +9,11 @@ from rcon import Client
 
 
 
-#Initialization of variables.
+#Initialization and dump of variables.
 class var_dump():
     ipaddr = '0.0.0.0'
     port = 0000
-    passwd = '0000'
-    inactivity_time = 0
+    passwod = '0000'
     start_hour = datetime.time(6)
     end_hour = datetime.time(22)
     seconds = 0 
@@ -26,10 +25,10 @@ def tick_check():
         time.sleep(1)
         var_dump.seconds += 1
         if var_dump.seconds % 30 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
-            server_status, players_online = main.server_status_check()
-            main.server_inactivity_checker(players_online)
+            server_status, players_online = local-functions.server_status_check(var_dump.ipaddr, var_dump.port, var_dump.passwod)
+            local-functions.server_inactivity_checker(players_online)
         if var_dump.seconds % 600 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
-            main.after_hours_shutdown()
+            local-functions.after_hours_shutdown(var_dump.start_hour, var_dump.end_hour)
       
       
       
