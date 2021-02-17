@@ -33,13 +33,8 @@ def tick_check(self):
     if self.sec % 600 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
       after_hours_shutdown()
        
-# Management function
-def puppet_master():
-  master = timer() #initializes the timer object
   
-  #temporary infinite loop since no run duration has been specified yet
-  while(1):
-    master.tick_check()
+
   
 
 ## playerCount function
@@ -82,17 +77,7 @@ def after_hours_shutdown():
         os.system("shutdown /s /t 1")
     else:
         return('The time is ' + str(datetime.datetime.now().time()) + '. It\'s not time to shut down yet!')
-                       
-# Discord-related functions:
-
-## Mood Updater function
-
-## Command Receiver function
-
-                       
-# Keys in the ignition!                       
-puppet_master()                       
-
+                      
                        
                        
                        
