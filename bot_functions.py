@@ -23,7 +23,7 @@ async def on_message(message):
             #To get the emoji in unicode, type \<:emoji:> in Discord, and copy the result.
             print('Starting server via command sent from Discord!')
             #start_server()
-            await.asyncio.sleep(1)
+            await asyncio.sleep(1)
             #if "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
             await message.add_reaction('👍')
             await message.add_reaction('⬆️')
