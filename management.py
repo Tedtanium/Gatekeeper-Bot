@@ -1,5 +1,5 @@
-import bot-functions
-import local-functions
+import bot_functions
+import local_functions
 import time
 import datetime
 import os
