@@ -20,7 +20,7 @@ async def on_message(message):
 
     if discord.utils.find(lambda Ga: Ga.name == 'Gatekeeper', message.author.roles):
         if message.content.startswith(start_server_cmd):
-            #To get the emoji in unicode, type \:<emoji: in Discord, and copy the result.
+            #To get the emoji in unicode, type \<:emoji:> in Discord, and copy the result.
             print('Starting server via command sent from Discord!')
             #start_server()
             time.sleep(1)
