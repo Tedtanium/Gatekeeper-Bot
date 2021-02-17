@@ -10,7 +10,6 @@ from rcon import Client
 
 
 #Initialization of variables.
-def __init__(): 
 class var_dump():
     ipaddr = '0.0.0.0'
     port = 0000
@@ -23,16 +22,21 @@ class var_dump():
 
 #Executes things on a clock!
 def tick_check(): 
-    time.sleep(1)
-    self.sec += 1
-    if self.sec % 30 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
-        server_status, players_online = main.server_status_check()
-        main.server_inactivity_checker(players_online)
-    if self.sec % 600 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
-        main.after_hours_shutdown()
+    while(1):
+        time.sleep(1)
+        var_dump.seconds += 1
+        if var_dump.seconds % 30 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
+            server_status, players_online = main.server_status_check()
+            main.server_inactivity_checker(players_online)
+        if var_dump.seconds % 600 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
+            main.after_hours_shutdown()
       
       
       
 # Management function
 def puppet_master():
-    master = timer() #initializes the timer object
+    while(1):
+        tick_check() 
+
+# Keys in the ignition!
+puppet_master()
