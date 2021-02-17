@@ -26,10 +26,9 @@ async def on_message(message):
             #if "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
             await message.add_reaction('👍')
             await message.add_reaction('⬆️')
-            await message.channel.send('Server is starting! Please wait, this may take a while...')
+            await message.channel.send('Server is starting! Please stand back, this may take a while...')
             # if statement -> if server is up, responds back @ing the person who said this
             print(message.author.roles)
-            #react
 
     if discord.utils.find(lambda Ga: Ga.name == 'Gatekeeper', message.author.roles):
         if message.content.startswith(stop_server_cmd):
