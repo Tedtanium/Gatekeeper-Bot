@@ -30,9 +30,9 @@ async def tick_check():
         print('Checking to see if ARK Server is going up...')
         if var_dump.seconds % 30 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
             server_status, players_online = local_functions.server_status_check(var_dump.ipaddr, var_dump.port, var_dump.passwod)
-            local-functions.server_inactivity_checker(players_online)
+            local_functions.server_inactivity_checker(players_online)
         if var_dump.seconds % 600 == 0 and "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
-            local-functions.after_hours_shutdown(var_dump.start_hour, var_dump.end_hour)
+            local_functions.after_hours_shutdown(var_dump.start_hour, var_dump.end_hour)
         var_dump.to += 1
       
       
