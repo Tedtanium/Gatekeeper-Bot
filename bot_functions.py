@@ -1,7 +1,6 @@
 import os
 import discord
 import time
-import management
 
 client = discord.Client()
 bot_token = 'whywouldIputthisherewhereeveryonecouldseeit?'
