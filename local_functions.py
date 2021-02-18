@@ -42,9 +42,30 @@ def server_inactivity_checker(players_online):
     # Disabled until ready. server_terminator()
 
 ## Server Starter function
+#Let's begin! (start the server)
+import os
 
+filePath = ''
+fileNeed = ''
+
+def serverStarter():
+    try:
+        os.startfile(filePath + fileName)
+    except:
+        print("serverStart: Somthing went wrong!")
+        
 ## Server Terminator function
+#Let us unleash Terminator upon the world! (close the server)
+import os
 
+fileKill = ''
+
+def serverTerminator():
+    try:
+        os.system('TASKKILL /IM' + fileKill)
+    except:
+        print("serverTeminator: Your governor is broken. Get in the CHOPPA!")
+        
 ## After-Hours Shutdown function - This is running on the assumption that it's a 24h clock and not a 12h, which is untested at this time.
 def after_hours_shutdown(start_hour, end_hour):
     if end_hour <= datetime.datetime.now().time() <= start_hour:
