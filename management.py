@@ -18,6 +18,7 @@ class var_dump():
     start_hour = datetime.time(6)
     end_hour = datetime.time(22)
     seconds = 0 
+    to = 0
     
 
 #Executes things on a clock!
@@ -37,6 +38,7 @@ async def tick_check():
       
       
 # Management function
+# Currently broken; the only thing that ends up running is bot_functions.client.run.
 async def puppet_master():
     print('HELLO?!')
     await tick_check() 
