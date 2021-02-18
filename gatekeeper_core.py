@@ -11,7 +11,7 @@ from rcon import Client
 
 
 client = commands.Bot(command_prefix = '>')
-bot_token = 'Nzk2NDI1OTcyNjAxNDU0NjUz.X_XvfA.-frxvyDMx1CDG_ymS21plgO7ZP0'
+bot_token = ''
 
 
 
