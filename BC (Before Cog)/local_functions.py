@@ -39,7 +39,7 @@ def server_inactivity_checker(players_online):
         var_dump.inactivity_time = 0
     if var_dump.inactivity_time >= 7200:
         print(datetime.datetime.now().time() + '- Server has been inactive for two hours! Shutting it down...')
-        sleep(3)
+        time.sleep(3)
     return(var_dump.inactivity_time)
     # Disabled until ready. server_terminator()
 
@@ -49,7 +49,7 @@ def server_starter():
     try:
         os.startfile(local_var_dump.filePath + local_var_dump.fileName)
     except:
-        print("serverStart: Somthing went wrong!")
+        print("serverStart: Something went wrong!")
         
 ## Server Terminator function
 #Let us unleash Terminator upon the world! (close the server)
