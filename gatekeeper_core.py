@@ -11,7 +11,7 @@ from rcon import Client
 
 
 client = commands.Bot(command_prefix = '>')
-bot_token = 'Put your own dang token in here dummy'
+bot_token = 'Nzk2NDI1OTcyNjAxNDU0NjUz.X_XvfA.-frxvyDMx1CDG_ymS21plgO7ZP0'
 
 
 
@@ -23,31 +23,33 @@ async def on_ready():
 async def startServer(ctx):
     #To get the emoji in unicode, type \<:emoji:> in Discord, and copy the result.
     print('Starting server via command sent from Discord!')
-    Ticker.startServer()
-    await asyncio.sleep(1)
+    await Ticker.startServer()
+    #await asyncio.sleep(5)
     if "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
         await ctx.message.add_reaction('⬆️')
         await ctx.message.channel.send('Server is starting! Please stand back, this may take a while...')
     # if statement -> if server is up, responds back @ing the person who said this
             #asyncio.wait_for(management.server_status == 'Up', None) ?
-                #await message.channel.send('Okay, we should be good now, ') 
+                #await message.channel.send('Okay, we should be good now, ')    
     
 @client.command()
 async def stopServer(ctx):
     await ctx.message.add_reaction('🛑')
     await ctx.message.channel.send('Successfully got stop command!')
-    Ticker.stopServer()
+    await Ticker.stopServer()
     
 class Ticker(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.timePassed = 0
-        self.tickCheck.start()
-        self.ipaddr = '0.0.0.0'
-        self.port = 0000
-        self.passwod = '0000'
+        self.ipaddr = '127.0.0.1'
+        self.port = 27020
+        self.passwod = '_yeetles_'
         self.startHour = datetime.time(6)
         self.endHour = datetime.time(22)
+        self.fileKill = 'ShooterGameServer.exe'
+        self.inactivityTime = 0
+        self.tickCheck.start()
 
     def cog_unload(self):
         self.tickCheck.cancel()
@@ -57,17 +59,20 @@ class Ticker(commands.Cog):
     @tasks.loop(seconds=1.0)
     async def tickCheck(self):
         self.timePassed += 1
-        print('Seconds passed since timer started: ' + self.timePassed)
+        ## Heartbeat
+        #if self.timePassed % 5 == 0:
+            #print('Seconds passed since timer started: ' + str(self.timePassed))
         ### Runs server_status_check if server is up every 30 seconds. ######
-        if self.timePassed % 30 == 0:
-            if "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
-                self.serverStatus, self.playerCount = self.serverStatusCheck(self.ipaddr, self.port, self.passwod)
-                print('Server Status Check has been run! The server is ' + serverStatus + 'and there are ' + playerCount + 'players online.')
-                self.inactvityChecker(self.playerCount)
+        if self.timePassed % 5 == 0:
+            serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
+            if serverTest == True:
+                self.serverStatus, self.playerCount = await self.serverStatusCheck(self.ipaddr, self.port, self.passwod)
+                print('Server Status Check has been run! The server is ' + self.serverStatus + ' and there are ' + str(self.playerCount) + ' players online.')
+                await self.inactivityChecker(self.playerCount)
             else:
                 print('Server status check: Server is not running! Server status check has been skipped.')
         ### Runs after_hours_shutdown if server is not up, every 5 minutes. ######
-        if var_dump.seconds % 600 == 0:
+        if self.timePassed % 600 == 0:
             if "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
                 self.afterHoursShutdown(self.startHour, self.endHour)
             else:
@@ -82,36 +87,38 @@ class Ticker(commands.Cog):
 
 ####### Server Status Checker ###############################################################################
 
-    async def serverStatusCheck(ipaddr, port, passwod):
+    async def serverStatusCheck(self, ipaddr, port, passwod):
   # Instigates connection to RCON and tries to get a playercount; if this fails the server is still starting.
-    try:
-        with Client(ipaddr, port, passwd=passwod) as client:
-            playersOnline = client.run('listplayers')
-        serverStatus = 'Up'
-        if 'No Players Connected' in playersOnline:
-            playerCount = 0
-        else: 
-            playerCount = (playersOnline).count('\n')
-    except:
+        try:
+            with Client(ipaddr, port, passwd=passwod) as client:
+                playersOnline = client.run('listplayers')
+            serverStatus = 'Up'
+            if 'No Players Connected' in playersOnline:
+                playerCount = 0
+            else: 
+                playerCount = (playersOnline).count('\n')
+        except:
         # If this is running and gives an error, the server is still going up. The player_count variable is dummied out for this instance.
-        serverStatus = 'Starting'
-        playerCount = -1
-    return(serverStatus, playerCount)
+            serverStatus = 'Starting'
+            playerCount = -1
+        return(serverStatus, playerCount)
 
 #############################################################################################################
 
 
 ###### Server Inactivity Checker ############################################################################
 
-    async def server_inactivity_checker(playersOnline):
+    async def inactivityChecker(self, playersOnline):
         if playersOnline == 0:
             self.inactivityTime += 30
-            print('Server has been inactive for ' + (self.inactvityTime / 60) + 'minutes.'
+            if self.inactivityTime == 1800:
+                print('Server has been inactive for 30 minutes.')
         else:
             self.inactivityTime = 0
-        if self.inactivityTime >= 7200:
-            print(datetime.datetime.now().time() + '- Server has been inactive for two hours! Shutting it down...')
-            self.stopServer()
+        if self.inactivityTime >= 30:
+            print(str(datetime.datetime.now().time()) + ' - Server has been inactive for two hours! Shutting it down...')
+            await self.stopServer()
+            self.inactivityTime = 0
         return
 
 
@@ -130,18 +137,15 @@ class Ticker(commands.Cog):
 ####### Server Starter ######################################################################################
 
     async def startServer():
-        try:
-            os.startfile(self.filePath + self.fileName)
-        except:
-            print("serverStart: Something went wrong!")
+        os.startfile('E:\\steamcmd\\ARK\\ShooterGame\\Binaries\\Win64\\ARK Serverstart Island.bat')
 
 #############################################################################################################
 
 ####### Server Terminator ###################################################################################
 
-    async def stopServer():
+    async def stopServer(self):
         try:
-            os.system('TASKKILL /IM' + self.fileKill)
+            os.system('TASKKILL /IM ' + self.fileKill)
         except:
             print("serverTeminator: Your governor is broken. Get in the CHOPPA!")
 
