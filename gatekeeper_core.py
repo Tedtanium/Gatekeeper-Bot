@@ -42,9 +42,9 @@ class Ticker(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.timePassed = 0
-        self.ipaddr = '127.0.0.1'
-        self.port = 27020
-        self.passwod = '_yeetles_'
+        self.ipaddr = ''
+        self.port = 0000
+        self.passwod = '0000'
         self.startHour = datetime.time(6)
         self.endHour = datetime.time(22)
         self.fileKill = 'ShooterGameServer.exe'
