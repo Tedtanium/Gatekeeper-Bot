@@ -8,9 +8,9 @@ from rcon import Client
 # A place to dump variables that may change easily in the future or should be initialized with 0.
 class local_var_dump():
     inactivity_time = 0
-    filePath = ''
-    fileNeed = ''
-    fileKill = ''
+    filePath = 'E:\\steamcmd\\ARK\ShooterGame\\Binaries\\Win64\\'
+    fileNeed = 'ARK Serverstart Island.bat'
+    fileKill = 'ShooterGameServer.exe'
 
 
 ## playerCount function
@@ -45,17 +45,17 @@ def server_inactivity_checker(players_online):
 
 ## Server Starter function
 #Let's begin! (start the server)
-def serverStarter():
+def server_starter():
     try:
-        os.startfile(var_dump.<filePath> + var_dump.<fileName>)
+        os.startfile(local_var_dump.filePath + local_var_dump.fileName)
     except:
         print("serverStart: Somthing went wrong!")
         
 ## Server Terminator function
 #Let us unleash Terminator upon the world! (close the server)
-def serverTerminator():
+def server_terminator():
     try:
-        os.system('TASKKILL /IM' + var_dump.<fileKill>)
+        os.system('TASKKILL /IM' + local_var_dump.fileKill)
     except:
         print("serverTeminator: Your governor is broken. Get in the CHOPPA!")
         
