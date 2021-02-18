@@ -1,6 +1,7 @@
 import os
 import discord
 import time
+import asyncio
 
 client = discord.Client()
 bot_token = 'whywouldIputthisherewhereeveryonecouldseeit?'
