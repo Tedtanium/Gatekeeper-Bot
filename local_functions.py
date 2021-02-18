@@ -8,7 +8,9 @@ from rcon import Client
 # A place to dump variables that may change easily in the future or should be initialized with 0.
 class local_var_dump():
     inactivity_time = 0
-      
+    filePath = ''
+    fileNeed = ''
+    fileKill = ''
 
 
 ## playerCount function
@@ -43,24 +45,17 @@ def server_inactivity_checker(players_online):
 
 ## Server Starter function
 #Let's begin! (start the server)
-
-filePath = ''
-fileNeed = ''
-
 def serverStarter():
     try:
-        os.startfile(filePath + fileName)
+        os.startfile(var_dump.<filePath> + var_dump.<fileName>)
     except:
         print("serverStart: Somthing went wrong!")
         
 ## Server Terminator function
 #Let us unleash Terminator upon the world! (close the server)
-
-fileKill = ''
-
 def serverTerminator():
     try:
-        os.system('TASKKILL /IM' + fileKill)
+        os.system('TASKKILL /IM' + var_dump.<fileKill>)
     except:
         print("serverTeminator: Your governor is broken. Get in the CHOPPA!")
         
