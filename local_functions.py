@@ -43,7 +43,6 @@ def server_inactivity_checker(players_online):
 
 ## Server Starter function
 #Let's begin! (start the server)
-import os
 
 filePath = ''
 fileNeed = ''
@@ -56,7 +55,6 @@ def serverStarter():
         
 ## Server Terminator function
 #Let us unleash Terminator upon the world! (close the server)
-import os
 
 fileKill = ''
 
