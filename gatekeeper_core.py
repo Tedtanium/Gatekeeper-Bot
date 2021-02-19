@@ -18,31 +18,15 @@ bot_token = ''
 @client.event
 async def on_ready():
     print('Successfully logged in as {0.user}'.format(client))
+    ### Loads all cogs in cogs subfolder so long as they end in .py, cutting off the file extension. ######
+    for filename in os.listdir('./cogs'):
+        if filename.endswith('.py'):
+            client.load_extension(f'cogs.{filename[:-3]}')
 
-@client.command()
-async def startServer(ctx):
-    #To get the emoji in unicode, type \<:emoji:> in Discord, and copy the result.
-    print('Starting server via command sent from Discord!')
-    serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
-    print('First serverTest: ' + str(serverTest))
-    if serverTest == True:
-        await ctx.message.add_reaction('❌')
-        await ctx.message.channel.send('I can\'t do that! It\'s already running!')
-        return
-    await Ticker.startServer()
-    await asyncio.sleep(5)
-    serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
-    print('Second serverTest: ' + str(serverTest))
-    if serverTest == True:
-        await ctx.message.add_reaction('✅')
-        await ctx.message.channel.send('Server is starting! Please stand back, this may take a while...')
-        #if 
-        #ctx.message.channel.send(ctx.message.author.mention() + '! The gates are open and ready to accept visitors.')
+###########################################################################################################
         
 
-    # if statement -> if server is up, responds back @ing the person who said this
-            #asyncio.wait_for(management.server_status == 'Up', None) ?
-                #await message.channel.send('Okay, we should be good now, ')    
+
     
 @client.command()
 async def stopServer(ctx):
@@ -68,6 +52,10 @@ class Ticker(commands.Cog):
         self.fileKill = 'ShooterGameServer.exe'
         self.inactivityTime = 0
         self.tickCheck.start()
+        
+    async def load(ctx, extension):
+        client.load_extension(f'cogs.{startServer}')
+        
 
     def cog_unload(self):
         self.tickCheck.cancel()
