@@ -23,26 +23,44 @@ async def on_ready():
 async def startServer(ctx):
     #To get the emoji in unicode, type \<:emoji:> in Discord, and copy the result.
     print('Starting server via command sent from Discord!')
+    serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
+    print('First serverTest: ' + str(serverTest))
+    if serverTest == True:
+        await ctx.message.add_reaction('❌')
+        await ctx.message.channel.send('I can\'t do that! It\'s already running!')
+        return
     await Ticker.startServer()
-    #await asyncio.sleep(5)
-    if "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == True:
-        await ctx.message.add_reaction('⬆️')
+    await asyncio.sleep(5)
+    serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
+    print('Second serverTest: ' + str(serverTest))
+    if serverTest == True:
+        await ctx.message.add_reaction('✅')
         await ctx.message.channel.send('Server is starting! Please stand back, this may take a while...')
+        #if 
+        #ctx.message.channel.send(ctx.message.author.mention() + '! The gates are open and ready to accept visitors.')
+        
+
     # if statement -> if server is up, responds back @ing the person who said this
             #asyncio.wait_for(management.server_status == 'Up', None) ?
                 #await message.channel.send('Okay, we should be good now, ')    
     
 @client.command()
 async def stopServer(ctx):
-    await ctx.message.add_reaction('🛑')
-    await ctx.message.channel.send('Successfully got stop command!')
+    await ctx.message.channel.send('Got it! Lowering the gates now...')
     await Ticker.stopServer()
+    await asyncio.sleep(5)
+    serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
+    if serverTest == False:
+        print('Server successfully closed via command.')
+        await ctx.message.add_reaction('🛑')
+    else:
+        await ctx.message.channel.send('The gate...didn\'t close. Something\'s wrong.')
     
 class Ticker(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.timePassed = 0
-        self.ipaddr = ''
+        self.ipaddr = '0.0.0.0'
         self.port = 0000
         self.passwod = '0000'
         self.startHour = datetime.time(6)
@@ -63,20 +81,20 @@ class Ticker(commands.Cog):
         #if self.timePassed % 5 == 0:
             #print('Seconds passed since timer started: ' + str(self.timePassed))
         ### Runs server_status_check if server is up every 30 seconds. ######
-        if self.timePassed % 5 == 0:
+        if self.timePassed % 30 == 0:
             serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
             if serverTest == True:
                 self.serverStatus, self.playerCount = await self.serverStatusCheck(self.ipaddr, self.port, self.passwod)
-                print('Server Status Check has been run! The server is ' + self.serverStatus + ' and there are ' + str(self.playerCount) + ' players online.')
+                print('Server Status Check: The server is currently ' + self.serverStatus + ' with ' + str(self.playerCount) + ' players online.')
                 await self.inactivityChecker(self.playerCount)
             else:
-                print('Server status check: Server is not running! Server status check has been skipped.')
+                print('Server status check: Server is offline! Server status check skipped.')
         ### Runs after_hours_shutdown if server is not up, every 5 minutes. ######
         if self.timePassed % 600 == 0:
             if "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter()) == False:
                 self.afterHoursShutdown(self.startHour, self.endHour)
             else:
-                print('After-Hours Shutdown: Server is still running! Check for what time it is has been skipped.')
+                print('After-Hours Shutdown: Server is still running! Time check has been skipped.')
 
 #############################################################################################################
 
@@ -115,7 +133,7 @@ class Ticker(commands.Cog):
                 print('Server has been inactive for 30 minutes.')
         else:
             self.inactivityTime = 0
-        if self.inactivityTime >= 30:
+        if self.inactivityTime >= 7200:
             print(str(datetime.datetime.now().time()) + ' - Server has been inactive for two hours! Shutting it down...')
             await self.stopServer()
             self.inactivityTime = 0
@@ -143,9 +161,9 @@ class Ticker(commands.Cog):
 
 ####### Server Terminator ###################################################################################
 
-    async def stopServer(self):
+    async def stopServer():
         try:
-            os.system('TASKKILL /IM ' + self.fileKill)
+            os.system('TASKKILL /IM ' + 'ShooterGameServer.exe')
         except:
             print("serverTeminator: Your governor is broken. Get in the CHOPPA!")
 
