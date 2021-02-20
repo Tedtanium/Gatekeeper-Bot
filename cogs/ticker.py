@@ -13,10 +13,11 @@ class Ticker(commands.Cog):
         self.timePassed = 0
         self.tickCheck.start()
         
-        
+##### The meat of the cog. #####        
     @tasks.loop(seconds=1.0)
     async def tickCheck(self):
         self.timePassed += 1
+################################
 
     def cog_unload(self):
         self.tickCheck.cancel()
