@@ -22,8 +22,16 @@ class Management():
 ###################### Stop Server ######################
 
     async def terminateServer(target):
-            os.system('TASKKILL /IM ' + target)
+        os.system('TASKKILL /IM ' + target)
 
+#########################################################
+
+##############  Server exe is Running Test ##############
+
+    async def serverTest():
+        serverProcessExists = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
+        return(serverProcessExists)
+    
 #########################################################
 
 ###################### Status Check #####################
