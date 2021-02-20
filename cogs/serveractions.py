@@ -26,7 +26,7 @@ class ServerActions(commands.Cog):
         #To get the emoji in unicode, type \<:emoji:> in Discord, and copy the result.
         print('Starting server via command sent from Discord!')
         await ctx.message.channel.send('Let\'s see...')
-        serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
+        serverTest = management.Management.serverTest()
         print('First serverTest: ' + str(serverTest))
         if serverTest == True:
             await ctx.message.add_reaction('❌')
@@ -34,7 +34,7 @@ class ServerActions(commands.Cog):
             return
         await startServer.bootServer(self)
         await asyncio.sleep(5)
-        serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
+        serverTest = management.Management.serverTest()
         print('Second serverTest: ' + str(serverTest))
         if serverTest == True:
             await ctx.message.add_reaction('✅')
@@ -51,15 +51,20 @@ class ServerActions(commands.Cog):
             
     @client.command()
     async def stopServer(self, ctx):
-        await ctx.message.channel.send('Got it! Lowering the gates now...')
-        await stopServer.terminateServer()
-        await asyncio.sleep(5)
-        serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
-        if serverTest == False:
-            print('Server successfully closed via command.')
-            await ctx.message.add_reaction('🛑')
+        serverTest = management.Management.serverTest()
+        # Future: Logic to make sure startServer isn't actively bringing the server up already.
+        if serverTest == True:
+            await ctx.message.channel.send('Got it! Lowering the gates now...')
+            await management.Management.terminateServer()
+            await asyncio.sleep(5)
+            serverTest = management.Management.serverTest()
+            if serverTest == False:
+                print('Server successfully closed via command.')
+                await ctx.message.add_reaction('🛑')
+            else:
+                await ctx.message.channel.send('The gate...didn\'t close. Something\'s wrong.')
         else:
-            await ctx.message.channel.send('The gate...didn\'t close. Something\'s wrong.')
+            await ctx.message.channel.send('I can\'t do that. The gate is already closed!')
 
 
 def setup(bot):
