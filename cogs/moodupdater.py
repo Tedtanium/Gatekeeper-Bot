@@ -8,7 +8,7 @@ import asyncio
 client = commands.Bot(command_prefix = '>')
 
 
-class moodUpdater(commands.Cog):
+class MoodUpdater(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         #local variables needed initialized here.
