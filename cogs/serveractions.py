@@ -6,7 +6,7 @@ import asyncio
 
 client = commands.Bot(command_prefix = '>')
 
-class startServer(commands.Cog):
+class ServerActions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.filepath = 'E:\\steamcmd\\ARK\\ShooterGame\\Binaries\\Win64\\ARK Serverstart Island.bat'
@@ -18,7 +18,7 @@ class startServer(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('startServer cog loaded.')
+        print('Server Actions cog loaded.')
 
     @client.command()
     async def startServer(self, ctx, *arg):
@@ -47,8 +47,20 @@ class startServer(commands.Cog):
             await ctx.message.channel.send('I\'ve finished opening the gate, 'ctx.message.author.mention + '. All who wish to head on through may do so.')
         else:
             await ctx.message.channel.send('Okay, we should be good now. Gate is open, for all who wish to head on through.')
+            
+    @client.command()
+    async def stopServer(self, ctx):
+        await ctx.message.channel.send('Got it! Lowering the gates now...')
+        await stopServer.terminateServer()
+        await asyncio.sleep(5)
+        serverTest = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
+        if serverTest == False:
+            print('Server successfully closed via command.')
+            await ctx.message.add_reaction('🛑')
+        else:
+            await ctx.message.channel.send('The gate...didn\'t close. Something\'s wrong.')
 
 
 def setup(bot):
-    bot.add_cog(startServer(bot))
+    bot.add_cog(ServerActions(bot))
 
