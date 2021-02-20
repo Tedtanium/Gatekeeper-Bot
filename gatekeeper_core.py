@@ -19,6 +19,8 @@ bot_token = ''
 async def on_ready():
     print('Successfully logged in as {0.user}'.format(client))
     
+
+    
 class Ticker(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -51,6 +53,7 @@ class Ticker(commands.Cog):
                 print('Server Status Check: The server is currently ' + self.serverStatus + ' with ' + str(self.playerCount) + ' players online.')
                 # Updates the bot's status with the current server status.
                 await self.bot.get_cog('moodUpdater').statusUpdate(self, self.serverStatus)
+                self.bot.get_cog('startServer').serverStatus = self.serverStatus
                 # Runs inactivityChecker cog.
                 await self.bot.get_cog('inactivityChecker').inactivityChecker(self.playerCount)
             else:
@@ -70,6 +73,7 @@ class Ticker(commands.Cog):
     async def before_tick(self):
         print('Waiting...')
         await self.bot.wait_until_ready()
+
 
 client.add_cog(Ticker(client))
 ######### Loads all cogs in cogs subfolder so long as they end in .py, cutting off the file extension. ######
