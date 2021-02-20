@@ -10,6 +10,7 @@ from rcon import Client
 class Management():
     def __init__(self):
         serverStatus = 'Down'
+        inactivityTime = 0
         
 ###################### Start Server #####################
 
@@ -60,7 +61,7 @@ class Management():
             self.inactivityTime = 0
         if self.inactivityTime >= 7200:
             print(str(datetime.datetime.now().time()) + ' - Server has been inactive for two hours! Shutting it down...')
-            await self.bot.get_cog('stopServer').terminateServer()
+            await terminateServer()
             self.inactivityTime = 0
         return
 
