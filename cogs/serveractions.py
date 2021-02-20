@@ -3,6 +3,7 @@ from discord.ext import commands, tasks
 import os
 import psutil
 import asyncio
+import gatekeeper.management
 
 client = commands.Bot(command_prefix = '>')
 
