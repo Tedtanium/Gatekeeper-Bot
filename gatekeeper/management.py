@@ -9,26 +9,26 @@ from rcon import Client
 
 class Management():
     def __init__(self):
-        serverStatus = 'Down'
-        inactivityTime = 0
+        self.serverStatus = 'Down'
         
 ###################### Start Server #####################
 
-    async def bootServer(filepath):
+    async def bootServer(self, filepath):
         os.startfile(filepath)
         
 #########################################################
 
 ###################### Stop Server ######################
 
-    async def terminateServer(target):
+    async def terminateServer():
+        target = 'ShooterGameServer.exe'
         os.system('TASKKILL /IM ' + target)
 
 #########################################################
 
 ##############  Server exe is Running Test ##############
 
-    async def serverTest():
+    async def serverTest(self):
         serverProcessExists = "ShooterGameServer.exe" in (p.name() for p in psutil.process_iter())
         return(serverProcessExists)
     
@@ -48,9 +48,11 @@ class Management():
                 playerCount = (playersOnline).count('\n')
         except:
         # If this is running and gives an error, the server is still going up. The player_count variable is dummied out for this instance.
-            serverStatus = 'Starting'
+            self.serverStatus = 'Starting'
             playerCount = -1
-        return(self.serverStatus, playerCount)
+        await Management.statusHeartbeat(self)
+        await Management.inactivityChecker(self, playerCount)
+        return(self.serverStatus)
 
 #########################################################
 
@@ -59,17 +61,11 @@ class Management():
     async def inactivityChecker(self, playersOnline):
         if playersOnline == 0:
             self.inactivityTime += 30
-            if self.inactivityTime == 1800:
-                print('Server has been inactive for 30 minutes.')
-            if self.inactivityTime == 3600:
-                print('Server has been inactive for 60 minutes.')
-            if self.inactivityTime == 5400:
-                print('Server has been inactive for 90 minutes.')
         else:
             self.inactivityTime = 0
         if self.inactivityTime >= 7200:
             print(str(datetime.datetime.now().time()) + ' - Server has been inactive for two hours! Shutting it down...')
-            await terminateServer()
+            await Management.terminateServer()
             self.inactivityTime = 0
         return
 
@@ -85,3 +81,13 @@ class Management():
 
 #########################################################
 
+#################### Status Heartbeat ###################
+
+    async def statusHeartbeat(self):
+        if self.oldStatus != self.serverStatus:
+            print('Server state change: ' + self.oldStatus + ' -> ' + self.serverStatus)
+            self.oldStatus = self.serverStatus
+        if self.inactivityTime % 1800 == 0 and self.inactivityTime != 0:
+            print(str(datetime.datetime.now().strftime("%H:%M:%S")) + ' - ' + str(int(self.inactivityTime / 60)) + ' minutes have passed in inactivity.')
+
+#########################################################
