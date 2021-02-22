@@ -26,35 +26,33 @@ class Core(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         # Variables.
-        self.ipaddr = '0.0.0.0'
+        self.ipaddr = '0000'
         self.port = 0000
-        self.passwod = '0000'
+        self.passwod = ''
         self.startHour = datetime.time(6)
         self.endHour = datetime.time(22)
+        self.inactivityTime = 0
+        self.oldStatus = 'Down'
         self.core.start()
         
 ####### Remains of TickCheck - Not sure what to do/where to put this code at the moment. ######################
     @tasks.loop(seconds=1.0)
     async def core(self):
         ### Runs server_status_check if server is up every 30 seconds. ######
-        if self.bot.get_cog('Ticker').timePassed % 5 == 0:
+        if self.bot.get_cog('Ticker').timePassed % 30 == 0:
             serverTest = await mgmt.Management.serverTest(self)
             if serverTest == True:
-                self.serverStatus, self.playerCount = await mgmt.Management.serverStatusCheck(self.ipaddr, self.port, self.passwod)
-                print('Server Status Check: The server is currently ' + self.serverStatus + ' with ' + str(self.playerCount) + ' players online.')
+                self.serverStatus = await mgmt.Management.serverStatusCheck(self, self.ipaddr, self.port, self.passwod)
                 # Updates the bot's status with the current server status.
                 await self.bot.get_cog('MoodUpdater').statusUpdate(self, self.serverStatus)
                 self.bot.get_cog('ServerActions').serverStatus = self.serverStatus
-                # Runs inactivityChecker cog.
-                await mgmt.Management.inactivityChecker(self.playerCount)
             else:
-                print('Server status check: Server is offline!')
                 await self.bot.get_cog('MoodUpdater').statusUpdate(self, 'Down')
         ### Runs after_hours_shutdown if server is not up, every 5 minutes. ######
         if self.bot.get_cog('Ticker').timePassed % 600 == 0:
             serverTest = await mgmt.Management.serverTest(self)
             if serverTest == False:
-                await mgmt.afterHoursShutdown(self.startHour, self.endHour)
+                await mgmt.Management.afterHoursShutdown(self, self.startHour, self.endHour)
             else:
                 print('After-Hours Shutdown: Server is still running!')
 
