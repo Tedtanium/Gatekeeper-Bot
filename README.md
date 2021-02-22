@@ -4,3 +4,4 @@ This bot will manage automation of basic server functions, interfacing and accep
 
 ### To-do: 
 - Create user documentation for the project.
+- Bundle up project as a package.
