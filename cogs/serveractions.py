@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands, tasks
 import os
-import psutil
 import asyncio
 import sys
 import datetime
@@ -75,7 +74,8 @@ class ServerActions(commands.Cog):
         if ctx.message.channel.id == 813498747803402251 or ctx.message.channel.id == 811405916418867232:
             serverTest = await mgmt.serverTest(self)
             if serverTest == True:
-                if mgmt.canSave == False:
+                # Manual saves can only be made once per hour.
+                if mgmt.lastSave == datetime.datetime.now().hour:
                     await ctx.message.channel.send('It\'s been too soon since the last save! I can\'t do that!')
                     await ctx.message.add_reaction('❌')
                     return
@@ -83,8 +83,9 @@ class ServerActions(commands.Cog):
                     await mgmt.serverStatusCheck(self, 'saveworld')
                     await mgmt.logger(self, str(ctx.message.author) + ' instigated a manual save!')
                     await ctx.message.add_reaction('💾')
-                    await ctx.message.channel.send('Okay! The save is complete.')                    
-                    mgmt.canSave = False
+                    await ctx.message.channel.send('Okay! The save is complete.')
+                    # Establishes hour cooldown.                    
+                    mgmt.lastSave = datetime.datetime.now().hour
 
 def setup(bot):
     bot.add_cog(ServerActions(bot))
