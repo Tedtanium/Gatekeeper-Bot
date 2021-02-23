@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands, tasks
 import os
-import psutil
 import asyncio
 import sys
 sys.path.append('E:/Scripts/Gatekeeper-Bot-main/gatekeeper')
@@ -14,8 +13,6 @@ class Ticker(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.timePassed = 0
-        self.startHour = datetime.time(6)
-        self.endHour = datetime.time(22)
         self.inactivityTime = 0
         self.oldStatus = 'Null'
         self.serverStatus = 'Down'
@@ -32,15 +29,13 @@ class Ticker(commands.Cog):
             await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Server | Status: " + self.serverStatus))
             await mgmt.statusHeartbeat(self)
 
-        ### Runs after_hours_shutdown if server is not up, every 5 minutes. ######
+        ### Runs after_hours_shutdown if server is not up, every 10 minutes. ######
         if self.timePassed % 600 == 0 and self.timePassed != 0:
             serverTest = await mgmt.serverTest(self)
             if serverTest == False:
-                await mgmt.afterHoursShutdown(self, self.startHour, self.endHour)
+                await mgmt.afterHoursShutdown(self)
             else:
                 await mgmt.logger(self, 'After-Hours Shutdown: Server is still running!')
-        if self.timePassed % 3600 == 0 and self.timePassed != 0:
-            mgmt.canSave = True
 ####################################################################################
 
 
