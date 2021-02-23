@@ -1,6 +1,4 @@
 import os
-import discord
-from discord.ext import commands, tasks
 import time
 import asyncio
 import datetime
@@ -11,7 +9,9 @@ serverStatus = 'Down'
 ipaddr = '127.0.0.1'
 port = 27020
 passwod = '_yeetles_'
-canSave = True
+lastSave = -1
+startHour = datetime.time(6)
+endHour = datetime.time(22)
         
 ###################### Start Server #####################
 
@@ -83,11 +83,12 @@ async def inactivityChecker(self, playersOnline):
 
 ################## After-Hours Shutdown #################
 
-async def afterHoursShutdown(self, start_hour, end_hour):
-    if end_hour <= datetime.datetime.now().time() <= start_hour:
+async def afterHoursShutdown(self):
+    global startHour, endHour
+    if endHour <= datetime.datetime.now().time() or datetime.datetime.now().time <= startHour:
         os.system("shutdown /s /t 1")
     else:
-        await logger(self, str(datetime.datetime.now().strftime("%H:%M:%S")) + 'After-Hours Shutdown: It\'s not even late yet!')
+        await logger(self, 'After-Hours Shutdown: It\'s not even late yet!')
 
 #########################################################
 
