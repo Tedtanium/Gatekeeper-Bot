@@ -7,8 +7,8 @@ from rcon import Client
 
 serverStatus = 'Down'
 ipaddr = '127.0.0.1'
-port = 27020
-passwod = 'Albacorium'
+port = 00000
+passwod = ''
 lastSave = -1
 startHour = datetime.time(6)
 endHour = datetime.time(22)
@@ -23,8 +23,6 @@ async def bootServer(self, filepath):
 ###################### Stop Server ######################
 
 async def terminateServer():
-    #target = 'ShooterGameServer.exe'
-    #os.system('TASKKILL /IM ' + target)    
     global serverStatus, ipaddr, port, passwod
     with Client(ipaddr, port, passwd=passwod) as client:
         client.run('saveworld')
