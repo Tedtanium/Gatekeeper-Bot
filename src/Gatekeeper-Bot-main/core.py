@@ -6,7 +6,7 @@ import asyncio
 
 
 client = commands.Bot(command_prefix = '>')
-bot_token = 'Nzk2NDI1OTcyNjAxNDU0NjUz.X_XvfA.0WJkxCYn43pXMPhjyYk5mVH0kao'
+bot_token = ''
 
 
 
